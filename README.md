@@ -3,7 +3,7 @@
 This repository contains the code and report for a replication of the paper
 
 ```
-Rafael Müller, Simon Kornblith, and Geoffrey E. Hinton. "When does label smoothing
+Müller, Rafael, Simon Kornblith, and Geoffrey E. Hinton. "When does label smoothing
 help?." Advances in neural information processing systems 32 (2019).
 ```
 
