@@ -1,0 +1,13 @@
+--extra-index-url https://download.pytorch.org/whl/cu118
+
+ipykernel==6.25.1
+ipywidgets==8.1.0
+matplotlib==3.7.2
+numpy==1.25.2
+Pillow==9.4.0
+portalocker==2.7.0
+spacy==3.6.1
+torch==2.0.1
+torchtext==0.15.2
+torchvision==0.15.2
+tqdm==4.66.1

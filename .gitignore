@@ -1,0 +1,17 @@
+/data/**
+!/data/.gitkeep
+**/__pycache__
+*.pt
+.ipynb_checkpoints
+venv
+
+*.aux
+*.idx
+*.log
+*.toc
+*.ist
+*.bbl
+*.blg
+*.bcf
+*.run.xml
+*.out

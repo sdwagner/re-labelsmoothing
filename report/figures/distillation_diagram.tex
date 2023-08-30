@@ -1,0 +1,31 @@
+%\begin{tikzpicture}
+%        \node[draw, thick, rounded corners, rectangle] at (2,2.5) (1) {\begin{tabular}{c}
+%             \textbf{Original Labels} \\ \textbf{(Hard or Smooth)}
+%        \end{tabular}};
+%        \node[draw, thick, rounded corners, rectangle split, rectangle split parts=3] at (0.5,0) (2) {Input\nodepart{two}\textbf{Teacher Network}\nodepart{three}Output};
+%        \node[draw, thick, rounded corners, rectangle] at (0.5, -2) (4) {\textbf{Temperature Scaling}};
+%        \node[draw, thick, rounded corners, rectangle split, rectangle split parts=3] at (2,-4) (3) {Input\nodepart{two}\textbf{Student Network}\nodepart{three}Output};
+%        \draw[-Triangle Cap,line width=0.8ex] ([xshift=-9mm] 1.south) to ([xshift=6mm] 2.north);
+%        \draw[-Triangle Cap,line width=0.8ex] ([xshift=6mm] 2.south) to ([xshift=6mm] 4.north);
+%        \draw[-Triangle Cap,line width=0.8ex] ([xshift=6mm] 4.south) to ([xshift=-9mm] 3.north);
+%        \draw[-Triangle Cap,line width=0.8ex] ([xshift=9mm]1.south) to ([xshift=9mm]3.north);
+%    \end{tikzpicture}
+    \begin{tikzpicture}[scale=0.7, every node/.style={scale=0.7}]
+        \node[draw,  rounded corners, rectangle, fill=cyan!20] at (0,0) (data) {            Training inputs};
+        \node[draw,  rounded corners, rectangle, fill=cyan!20] at (0,-2.5) (labels) {             Training labels};
+        \node[draw,  rounded corners, rectangle, align=center] at (4.5,-1) (teacher) {Teacher network\\(fixed parameters)};
+        \node at (9,-1) (teacher-output) {$p^\tau$};
+        \node at (9,1) (student-output) {$q^\tau$};
+        \node at (11,-1) (loss) {$L$};
+        \node at (9,-2.5) (smooth-labels) {$y^\text{LS}$};
+        \node[draw,  rounded corners, rectangle, align=center] at (4.5,1) (student) {Student network\\(learnable parameters)};
+        \draw[-Latex,line width=0.2ex] (data.east) to (teacher.west);
+        \draw[-Latex,line width=0.2ex] (teacher.east) -- node[above,align=center] {\footnotesize Temperature \\[-2pt] \footnotesize scaling} (teacher-output.west);
+        \draw[-Latex,line width=0.2ex] (student.east) -- node[above,align=center] {\footnotesize Temperature \\[-2pt] \footnotesize scaling} (student-output.west);
+        \draw[-Latex,line width=0.2ex] (labels.east) -- node[above,align=center] {\footnotesize Label smoothing} (smooth-labels.west);
+        \draw[-Latex,line width=0.2ex] (data.east) to (student.west);
+        \draw[-Latex,line width=0.2ex] (smooth-labels.east) to ([yshift=-2mm]loss.west);        
+        \draw[-Latex,line width=0.2ex] (teacher-output.east) to (loss.west);
+        \draw[-Latex,line width=0.2ex] (student-output.east) to ([yshift=2mm]loss.west);
+%        \draw[-Latex,line width=0.2ex, gray, dashed] (loss.north) to[in=60,out=90, looseness=1.2] (student.north);
+    \end{tikzpicture}

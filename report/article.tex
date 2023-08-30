@@ -1,0 +1,16 @@
+\documentclass{rescience}
+\DeclareMathOperator{\conf}{conf}
+\DeclareMathOperator{\acc}{acc}
+\usetikzlibrary{shapes.multipart, arrows.meta} 
+\begin{document}
+\newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
+\input{header.tex}
+\input{content.tex}
+
+\hypersetup{linkcolor=black,urlcolor=darkgray}
+\renewcommand\emph[1]{{\bfseries #1}}
+\setlength\bibitemsep{0pt}
+\printbibliography
+
+\input{appendix.tex}
+\end{document}
