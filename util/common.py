@@ -54,8 +54,8 @@ def compute_reliability(model, data_loader, device, temperature = 1.0):
     return correct_pred, maxs
 
 # Internal helper function for the reliability
-def bin_reliability(model, validation_loader, device, num_bins, temperature=1.0):
-    a, c = compute_reliability(model, validation_loader, device, temperature)
+def bin_reliability(model, test_loader, device, num_bins, temperature=1.0):
+    a, c = compute_reliability(model, test_loader, device, temperature)
     
     reliability = torch.zeros((3,num_bins))
     a = a.to(reliability.device)

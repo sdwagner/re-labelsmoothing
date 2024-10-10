@@ -232,7 +232,7 @@ def train_epoch(model, optimizer, loss_fn):
 
     return losses / len(list(train_dataloader))
 
-# Calculate validation loss
+# Calculate test loss
 def evaluate(model, temp=1.0, alpha=0.0):
     model.eval()
     losses = 0
@@ -264,7 +264,7 @@ def evaluate(model, temp=1.0, alpha=0.0):
 
     return losses / len(list(val_dataloader))
 
-# Calculate validation NLL
+# Calculate test NLL
 def calcNLL(model, temp=1.0):
     model.eval()
     losses = 0
@@ -392,8 +392,8 @@ def t_compute_reliability(model, data_loader, device, temperature=1.0):
     return correct_pred, maxs
 
 # Internal helper function
-def t_bin_reliability(model, validation_loader, device, num_bins, temperature=1.0):
-    a, c = t_compute_reliability(model, validation_loader, device, temperature)
+def t_bin_reliability(model, test_loader, device, num_bins, temperature=1.0):
+    a, c = t_compute_reliability(model, test_loader, device, temperature)
 
     reliability = torch.zeros((3, num_bins))
     a = a.to(reliability.device)
@@ -477,22 +477,22 @@ def runReliability(alpha, temperature, show=False):
     num_bins = 15
     val_iter = Multi30k(split='valid', language_pair=(
         SRC_LANGUAGE, TGT_LANGUAGE))
-    validation_loader = DataLoader(
+    test_loader = DataLoader(
         val_iter, batch_size=BATCH_SIZE, collate_fn=collate_fn)
     transformer.load_state_dict(torch.load(
         f"models/Transformer_Multi30K_IMC/Transformer_alpha={0.0}.pt", map_location=device))
     printLog(
-        f"Accuarcy for Transformer w. Hard Labels: {t_compute_accuracy(transformer, validation_loader, device).item():.2f}%")
+        f"Accuarcy for Transformer w. Hard Labels: {t_compute_accuracy(transformer, test_loader, device).item():.2f}%")
     rel_bins_Hard = t_bin_reliability(
-        transformer, validation_loader, device, num_bins)
+        transformer, test_loader, device, num_bins)
     rel_bins_Temperature = t_bin_reliability(
-        transformer, validation_loader, device, num_bins, temperature)
+        transformer, test_loader, device, num_bins, temperature)
     transformer.load_state_dict(torch.load(
         f"models/Transformer_Multi30K_IMC/Transformer_alpha={alpha}.pt", map_location=device))
     printLog(
-        f"Accuarcy for Transformer w. Smooth Labels (alpha={alpha}): {t_compute_accuracy(transformer, validation_loader, device).item():.2f}%")
+        f"Accuarcy for Transformer w. Smooth Labels (alpha={alpha}): {t_compute_accuracy(transformer, test_loader, device).item():.2f}%")
     rel_bins_Smooth = t_bin_reliability(
-        transformer, validation_loader, device, num_bins)
+        transformer, test_loader, device, num_bins)
 
     fig = plot_reliability(rel_bins_Hard, rel_bins_Smooth,
                            rel_bins_Temperature, temperature, alpha)
@@ -514,7 +514,7 @@ def runCalibrationEffects(alphas: list(), temps, show=False):
         f"Running calibrationEffects with alphas={alphas} and temps={temps}")
     val_iter = Multi30k(split='valid', language_pair=(
         SRC_LANGUAGE, TGT_LANGUAGE))
-    validation_loader = DataLoader(
+    test_loader = DataLoader(
         val_iter, batch_size=BATCH_SIZE, collate_fn=collate_fn)
     bleus = []
     device = DEVICE
@@ -530,7 +530,7 @@ def runCalibrationEffects(alphas: list(), temps, show=False):
     for i in range(temps.shape[0]):
         bleus.append(calculate_bleu(val_iter, transformer, temp=temps[i])*100)
         rel_bins = t_bin_reliability(
-            transformer, validation_loader, device, num_bins, temps[i])
+            transformer, test_loader, device, num_bins, temps[i])
         eces.append(calculate_ece(rel_bins))
         nlls.append(calcNLL(transformer, temp=temps[i]))
     for alpha in alphas:
@@ -547,7 +547,7 @@ def runCalibrationEffects(alphas: list(), temps, show=False):
             bleusSmooth[alpha].append(calculate_bleu(
                 val_iter, transformer, temp=temps[i])*100)
             rel_bins = t_bin_reliability(
-                transformer, validation_loader, device, num_bins, temps[i])
+                transformer, test_loader, device, num_bins, temps[i])
             ecesSmooth[alpha].append(calculate_ece(rel_bins))
             nllsSmooth[alpha].append(calcNLL(transformer, temp=temps[i]))
         bleuECEPlot(temps, bleus, eces, 0.0, ax1)

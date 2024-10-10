@@ -36,7 +36,7 @@ class FullyConnected(nn.Module):
         return x
     
     # Training Loop utilizing the standard training loop of trainer.py
-    def train_model(self, device, training_loader, validation_loader, label_smoothing_factor, epochs):
+    def train_model(self, device, training_loader, test_loader, label_smoothing_factor, epochs):
         
         cross_entropy = nn.CrossEntropyLoss(label_smoothing=label_smoothing_factor)
         
@@ -48,7 +48,7 @@ class FullyConnected(nn.Module):
         
         scheduler = LinearLR(opt, 1, 0, epochs)
         
-        trainer.train_model(self, device, training_loader, validation_loader, epochs, cross_entropy, opt, scheduler)
+        trainer.train_model(self, device, training_loader, test_loader, epochs, cross_entropy, opt, scheduler)
         
     # Properties for the Penultimate Layer representation
     @property

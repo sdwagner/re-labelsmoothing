@@ -204,7 +204,7 @@ class ResNet(nn.Module):
         return self.avgpool, self.fc
     
     # Training Loop utilizing the standard training loop of trainer.py
-    def train_model(self, device, training_loader, validation_loader, label_smoothing_factor, epochs):
+    def train_model(self, device, training_loader, test_loader, label_smoothing_factor, epochs):
         #Is this loss?
         cross_entropy = nn.CrossEntropyLoss(label_smoothing=label_smoothing_factor)
         train_loss = lambda outputs, labels: 3*cross_entropy(outputs, labels)
@@ -215,7 +215,7 @@ class ResNet(nn.Module):
         #Definition of scheduler
         scheduler = MultiStepLR(opt, [102, 153], 0.1)
         
-        trainer.train_model(self, device, training_loader, validation_loader, epochs, train_loss, opt, scheduler, True)
+        trainer.train_model(self, device, training_loader, test_loader, epochs, train_loss, opt, scheduler, True)
 
 
 # Define ResNet-56 as a special case of ResNet

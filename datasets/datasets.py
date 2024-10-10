@@ -16,15 +16,15 @@ def cifar10_training_dataset():
     training_data = torchvision.datasets.CIFAR10(root='./data', train=True,download=True, transform=training_transform)
     return training_data
 
-# Loading the CIFAR10 validation datasets and applying transformation
-def cifar10_validation_dataset():
+# Loading the CIFAR10 test datasets and applying transformation
+def cifar10_test_dataset():
     test_transform = transforms.Compose([
         transforms.CenterCrop(24), 
         transforms.ToTensor(), 
         transforms.Normalize((0.4923172, 0.48307145, 0.4474483),(0.24041407,0.23696952,0.25565723),True)
     ])
-    validation_data = torchvision.datasets.CIFAR10(root='./data', train=False,download=True, transform=test_transform)
-    return validation_data
+    test_data = torchvision.datasets.CIFAR10(root='./data', train=False,download=True, transform=test_transform)
+    return test_data
 
 # Loading the CIFAR10 training dataloader with a given batch_size
 def cifar10_training_loader(batch_size: int = 128):
@@ -32,11 +32,11 @@ def cifar10_training_loader(batch_size: int = 128):
     training_loader = t_data.DataLoader(training_data, batch_size=batch_size, shuffle=True, num_workers=2)
     return training_loader
 
-# Loading the CIFAR10 validation dataloader
-def cifar10_validation_loader():
-    validation_data = cifar10_validation_dataset()
-    validation_loader = t_data.DataLoader(validation_data, batch_size=len(validation_data), shuffle=True, num_workers=2)
-    return validation_loader
+# Loading the CIFAR10 test dataloader
+def cifar10_test_loader():
+    test_data = cifar10_test_dataset()
+    test_loader = t_data.DataLoader(test_data, batch_size=len(test_data), shuffle=True, num_workers=2)
+    return test_loader
 
 # Loading the CIFAR100 training datasets and applying transformation
 def cifar100_training_dataset():
@@ -50,15 +50,15 @@ def cifar100_training_dataset():
     training_data = t_data.Subset(training_data, range(40000))
     return training_data
 
-# Loading the CIFAR100 validation datasets and applying transformation
-def cifar100_validation_dataset():
+# Loading the CIFAR100 test datasets and applying transformation (using validation set according to Müller et al.)
+def cifar100_test_dataset():
     test_transform = transforms.Compose([
         transforms.ToTensor(), 
         transforms.Normalize([0.5071, 0.4865, 0.4409], [0.2673, 0.2564, 0.2761])
     ])
-    validation_data = torchvision.datasets.CIFAR100(root='./data', train=True,download=True, transform=test_transform)
-    validation_data = t_data.Subset(validation_data, range(40000, 50000))
-    return validation_data
+    test_data = torchvision.datasets.CIFAR100(root='./data', train=True,download=True, transform=test_transform)
+    test_data = t_data.Subset(test_data, range(40000, 50000))
+    return test_data
     
 # Loading the CIFAR100 training dataloader with a given batch_size
 def cifar100_training_loader(batch_size: int = 128):
@@ -66,11 +66,11 @@ def cifar100_training_loader(batch_size: int = 128):
     training_loader = t_data.DataLoader(training_data, batch_size=batch_size, shuffle=True, num_workers=2)
     return training_loader
 
-# Loading the CIFAR10 validation dataloader
-def cifar100_validation_loader():
-    validation_data = cifar100_validation_dataset()
-    validation_loader = t_data.DataLoader(validation_data, batch_size=len(validation_data), shuffle=True, num_workers=2)
-    return validation_loader
+# Loading the CIFAR100 test dataloader
+def cifar100_test_loader():
+    test_data = cifar100_test_dataset()
+    test_loader = t_data.DataLoader(test_data, batch_size=len(test_data), shuffle=True, num_workers=2)
+    return test_loader
 
 # Loading the MNIST training datasets and applying transformation
 def mnist_training_dataset(augmentation: bool):
@@ -81,11 +81,11 @@ def mnist_training_dataset(augmentation: bool):
     training_data = torchvision.datasets.MNIST(root='./data', train=True, download=True, transform=transform)
     return training_data
 
-# Loading the MNIST validation datasets and applying transformation
-def mnist_validation_dataset():
+# Loading the MNIST test datasets and applying transformation
+def mnist_test_dataset():
     transform = transforms.Compose([transforms.ToTensor()])
-    validation_data = torchvision.datasets.MNIST(root='./data', train=False, download=True, transform=transform)
-    return validation_data
+    test_data = torchvision.datasets.MNIST(root='./data', train=False, download=True, transform=transform)
+    return test_data
 
 # Loading the MNIST training dataloader with a given batch_size
 def mnist_training_loader(augmentation: bool, batch_size=512):
@@ -93,11 +93,11 @@ def mnist_training_loader(augmentation: bool, batch_size=512):
     training_loader = t_data.DataLoader(training_data, batch_size=batch_size, shuffle=True, num_workers=2)
     return training_loader
 
-# Loading the MNIST validation dataloader
-def mnist_validation_loader():
-    validation_data = mnist_validation_dataset()
-    validation_loader = t_data.DataLoader(validation_data, batch_size=len(validation_data), shuffle=True, num_workers=2)
-    return validation_loader
+# Loading the MNIST test dataloader
+def mnist_test_loader():
+    test_data = mnist_test_dataset()
+    test_loader = t_data.DataLoader(test_data, batch_size=len(test_data), shuffle=True, num_workers=2)
+    return test_loader
 
 # Loading the FMNIST training datasets and applying transformation
 def fmnist_training_dataset():
@@ -108,11 +108,11 @@ def fmnist_training_dataset():
     training_data = torchvision.datasets.FashionMNIST(root='./data', train=True, download=True, transform=transform)
     return training_data
 
-# Loading the FMNIST validation datasets and applying transformation
-def fmnist_validation_dataset():
+# Loading the FMNIST test datasets and applying transformation
+def fmnist_test_dataset():
     transform = transforms.Compose([transforms.ToTensor()])
-    validation_data = torchvision.datasets.FashionMNIST(root='./data', train=False, download=True, transform=transform)
-    return validation_data
+    test_data = torchvision.datasets.FashionMNIST(root='./data', train=False, download=True, transform=transform)
+    return test_data
 
 # Loading the FMNIST training dataloader with a given batch_size
 def fmnist_training_loader():
@@ -120,11 +120,11 @@ def fmnist_training_loader():
     training_loader = t_data.DataLoader(training_data, batch_size=512, shuffle=True, num_workers=2)
     return training_loader
 
-# Loading the FMNIST validation dataloader 
-def fmnist_validation_loader():
-    validation_data = fmnist_validation_dataset()
-    validation_loader = t_data.DataLoader(validation_data, batch_size=len(validation_data), shuffle=True, num_workers=2)
-    return validation_loader
+# Loading the FMNIST test dataloader 
+def fmnist_test_loader():
+    test_data = fmnist_test_dataset()
+    test_loader = t_data.DataLoader(test_data, batch_size=len(test_data), shuffle=True, num_workers=2)
+    return test_loader
 
 # Loading the EMNIST training datasets and applying transformation
 def emnist_training_dataset():
@@ -135,13 +135,13 @@ def emnist_training_dataset():
     training_data = torchvision.datasets.EMNIST(root="./data", split="balanced", train=True, download=True, transform=transform)
     return training_data
 
-# Loading the EMNIST validation datasets and applying transformation
-def emnist_validation_dataset():
+# Loading the EMNIST test datasets and applying transformation
+def emnist_test_dataset():
     transform = transforms.Compose([
         transforms.ToTensor()
     ])
-    validation_data = torchvision.datasets.EMNIST(root="./data", split="balanced", train=False, download=True, transform=transform)
-    return validation_data
+    test_data = torchvision.datasets.EMNIST(root="./data", split="balanced", train=False, download=True, transform=transform)
+    return test_data
 
 # Loading the EMNIST training dataloader with a given batch_size
 def emnist_training_loader():
@@ -149,11 +149,11 @@ def emnist_training_loader():
     training_loader = t_data.DataLoader(training_data, batch_size=512, shuffle=True, num_workers=2)
     return training_loader
 
-# Loading the EMNIST validation dataloader
-def emnist_validation_loader():
-    validation_data = emnist_validation_dataset()
-    validation_loader = t_data.DataLoader(validation_data, batch_size=len(validation_data), shuffle=True, num_workers=2)
-    return validation_loader
+# Loading the EMNIST test dataloader
+def emnist_test_loader():
+    test_data = emnist_test_dataset()
+    test_loader = t_data.DataLoader(test_data, batch_size=len(test_data), shuffle=True, num_workers=2)
+    return test_loader
 
 # Loading the CUB-200-2011 training datasets and applying transformation
 def cub_200_2011_training_dataset():
@@ -170,14 +170,14 @@ def cub_200_2011_training_dataset():
     training_data = CUB_200_2011('data/', split="train", transforms=transform)
     return training_data
 
-# Loading the CUB-200-2011 validation datasets and applying transformation
-def cub_200_2011_validation_dataset():
+# Loading the CUB-200-2011 test datasets and applying transformation
+def cub_200_2011_test_dataset():
     transform = transforms.Compose([
         transforms.Resize((256, 256)),
         transforms.ToTensor()
     ])
-    validation_data = CUB_200_2011('data/', split="val", transforms=transform)
-    return validation_data
+    test_data = CUB_200_2011('data/', split="test", transforms=transform)
+    return test_data
 
 # Loading the CUB-200-2011 training dataloader with a given batch_size
 def cub_200_2011_training_loader(batch_size = 256):
@@ -185,11 +185,11 @@ def cub_200_2011_training_loader(batch_size = 256):
     training_loader = t_data.DataLoader(training_data, batch_size, shuffle=True, num_workers=2)
     return training_loader
 
-# Loading the CUB-200-2011 validation dataloader with a given batch_size
-def cub_200_2011_validation_loader(batch_size = 256):
-    validation_data = cub_200_2011_validation_dataset()
-    validation_loader = t_data.DataLoader(validation_data, batch_size, shuffle=True, num_workers=2)
-    return validation_loader
+# Loading the CUB-200-2011 test dataloader with a given batch_size
+def cub_200_2011_test_loader(batch_size = 256):
+    test_data = cub_200_2011_test_dataset()
+    test_loader = t_data.DataLoader(test_data, batch_size, shuffle=True, num_workers=2)
+    return test_loader
 
 # Loading the TinyImageNet training datasets and applying transformation
 def tinyimagenet_training_dataset():
@@ -206,14 +206,14 @@ def tinyimagenet_training_dataset():
     training_data = TinyImageNet('data/', split="train", transforms=transform)
     return training_data
 
-# Loading the TinyImageNet validation datasets and applying transformation
-def tinyimagenet_validation_dataset():
+# Loading the TinyImageNet test datasets and applying transformation
+def tinyimagenet_test_dataset():
     transform = transforms.Compose([
         transforms.Resize((64, 64)),
         transforms.ToTensor()
     ])
-    validation_data = TinyImageNet('data/', split="val", transforms=transform)
-    return validation_data
+    test_data = TinyImageNet('data/', split="test", transforms=transform)
+    return test_data
 
 # Loading the TinyImageNet training dataloader with a given batch_size
 def tinyimagenet_training_loader(batch_size = 128):
@@ -221,8 +221,8 @@ def tinyimagenet_training_loader(batch_size = 128):
     training_loader = t_data.DataLoader(training_data, batch_size, shuffle=True, num_workers=2)
     return training_loader
 
-# Loading the TinyImageNet validation dataloader with a given batch_size
-def tinyimagenet_validation_loader(batch_size = 256):
-    validation_data = tinyimagenet_validation_dataset()
-    validation_loader = t_data.DataLoader(validation_data, batch_size, shuffle=True, num_workers=2)
-    return validation_loader
+# Loading the TinyImageNet test dataloader with a given batch_size
+def tinyimagenet_test_loader(batch_size = 256):
+    test_data = tinyimagenet_test_dataset()
+    test_loader = t_data.DataLoader(test_data, batch_size, shuffle=True, num_workers=2)
+    return test_loader
