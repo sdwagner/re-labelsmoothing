@@ -146,7 +146,7 @@ The authors propose a visualization scheme that illustrates how label smoothing 
 For a single data point, neural network classifiers calculate a prediction \begin{equation}
     p_k = \frac{\exp{(a^T w_k)}}{\sum_{l=1}^K \exp{(a^T w_l)}}\label{eq:softmax}
 \end{equation} for the $k$-th class by applying the softmax to the logit $a^Tw_k$, where $a\in \mathbb{R}^{n}$ is the activation vector of the penultimate layer and $w_k$ is the weight vector for the $k$-th class of the last layer. The weight vector $w_k\in \mathbb{R}^{n}$ can be seen as a template of class $k$.
-The authors state, that the logit dependents on the Euclidean distance $||a-w_k||^2$ between the activations of the penultimate layer $a$ and the template $w_k$. 
+The authors state, that the logits depend on the Euclidean distance $||a-w_k||^2$ between the activations of the penultimate layer $a$ and the template $w_k$. 
 To visualize a high-dimensional activation $a$ in two dimensions, we first choose three classes and their corresponding templates $w_1, w_2$, and $w_3$. To find the plane passing through the templates, we subtract the third template from the first and second template, resulting in vectors $\Delta_1 = w_1 - w_3$ and $\Delta_2 = w_2 - w_3$. 
 After that, we define the matrix 
 \begin{align*}
@@ -196,7 +196,7 @@ We were able to reproduce the effect described in the paper as seen in Figure \r
 
 \section{Implicit Model Calibration}\label{sec:imc}
 \label{sec:model_calibration_basics}
-The authors compared the model calibration of multiple models trained with hard labels and smooth labels to demonstrate the improvement of results with smooth labels. Additionally, they applied temperature scaling to the models trained with hard labels to improve their calibration. The evaluation was performed using the ECE, followed by the corresponding reliability diagrams.\\
+The authors compared the model calibration of multiple models trained with hard labels and smooth labels to demonstrate the improvement of results with smooth labels. Additionally, they applied temperature scaling to the models trained with hard labels to improve their calibration. The evaluation was performed using the \textit{expected calibration error (ECE)}, followed by the corresponding reliability diagrams.\\
 
 In the original paper, the model calibration was examined on ResNet-56, InceptionV4, and the Transformer architecture. While ResNet-56 and InceptionV4 were used for classification on the CIFAR-100 and ImageNet datasets, the Transformer was trained on the Multi30k dataset to translate text from English to German.
 

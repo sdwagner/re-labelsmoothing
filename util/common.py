@@ -3,6 +3,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 import math
 import matplotlib.pyplot as plt
+import numpy as np
 
 # Constants for the number of epochs of each network
 NUM_EPOCHS_ALEXNET = 1246
@@ -16,20 +17,24 @@ NUM_BINS = 15
 
 # Helper function to calulate the accuracy of a model given a dataset and device
 @torch.no_grad()
-def compute_accuracy(model, data_loader, device):
+def compute_accuracy(model, data_loader, device, return_err=False):
     model.eval()
-    correct_pred, num_examples = 0, 0
+    correct_pred = []
     for i, (features, targets) in enumerate(data_loader):
-        
         features = features.to(device)
         targets = targets.to(device)
-
         logits = model(features)
         _, predicted_labels = torch.max(logits, 1)
-        num_examples += targets.size(0)
-        correct_pred += (predicted_labels == targets).sum()
-    return correct_pred.float()/num_examples * 100
-
+        correct_pred.append((predicted_labels == targets).cpu())
+    correct_pred = np.array(correct_pred).flatten()
+    accuracy = np.mean(correct_pred).item() * 100
+    if return_err:
+        
+        std_err = 100 * (np.std(correct_pred)/np.sqrt(len(correct_pred))).item()
+        return accuracy, std_err 
+    else:
+        return accuracy
+        
 # Helper function to calulate the reliability of a model given a dataloader, device and
 # optionally a temperature for temperature scaling
 @torch.no_grad()
@@ -54,8 +59,8 @@ def compute_reliability(model, data_loader, device, temperature = 1.0):
     return correct_pred, maxs
 
 # Internal helper function for the reliability
-def bin_reliability(model, validation_loader, device, num_bins, temperature=1.0):
-    a, c = compute_reliability(model, validation_loader, device, temperature)
+def bin_reliability(model, test_loader, device, num_bins, temperature=1.0):
+    a, c = compute_reliability(model, test_loader, device, temperature)
     
     reliability = torch.zeros((3,num_bins))
     a = a.to(reliability.device)

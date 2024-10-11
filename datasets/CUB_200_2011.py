@@ -5,7 +5,7 @@ from torch.utils.data import Dataset
 
 """
 Dataset for CUB_200_2011
-Used for loading training and validation of the CUB_200_2011 dataset.
+Used for loading training and test data of the CUB_200_2011 dataset.
 This requires the zip file to be unpacked in the chosen directory.
 """
 class CUB_200_2011 (Dataset):
@@ -14,7 +14,7 @@ class CUB_200_2011 (Dataset):
     
     Args:
     directory (string): Contains the directory in which the zip has been unpacked.
-    split (string, optional): Contains the prefered split, either train or val. 
+    split (string, optional): Contains the prefered split, either train or test. 
         The default is train, any other then the above values leads to an error.
     transforms (callable, optional): Contains a transforms that given a PIL Image, returns
         a transformed image. This is used for data augmentation.
@@ -25,10 +25,10 @@ class CUB_200_2011 (Dataset):
         self.targets = []
         self.transforms = transforms
         
-        # Loading the training or validation data
-        if (split == "train" or split == "val"):
+        # Loading the training or test data
+        if (split == "train" or split == "test"):
             
-            split = "0" if (split == "val") else "1"
+            split = "0" if (split == "test") else "1"
             
             #Loading text files containing images paths and labels
             images_txt = os.path.join(directory, "CUB_200_2011", "images.txt")
@@ -49,7 +49,7 @@ class CUB_200_2011 (Dataset):
         
         # Error for any other split
         else:
-            raise ValueError(f"The split can only be train, test or val, but {split} was given.")
+            raise ValueError(f"The split can only be train or test, but {split} was given.")
 
     """
     Returns the total amount of images.

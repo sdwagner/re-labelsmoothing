@@ -3,7 +3,7 @@ from tqdm.auto import tqdm
 from util.common import *
 
 # Helper function to train the classification networks
-def train_model(model, device, training_loader, validation_loader, epochs,
+def train_model(model, device, training_loader, test_loader, epochs,
                  loss_fn, opt, scheduler, gradient_clipping=False):
 
     # History to show loss over time 
@@ -15,7 +15,7 @@ def train_model(model, device, training_loader, validation_loader, epochs,
     
     # Training loop over epochs
     epoch_loop = tqdm(range(epochs), desc="Total progress", position=0)
-    epoch_loop.set_postfix(lr = opt.param_groups[0]['lr'], loss = epoch_loss, accuracy = '0%', validation_accuracy = '0%')
+    epoch_loop.set_postfix(lr = opt.param_groups[0]['lr'], loss = epoch_loss, accuracy = '0%', test_accuracy = '0%')
     for i in epoch_loop:
         
         # Training
@@ -61,11 +61,11 @@ def train_model(model, device, training_loader, validation_loader, epochs,
         epoch_loss = sum(history[-epoch_size:]) / epoch_size
         epoch_loop.set_postfix(lr = opt.param_groups[0]['lr'],
                              loss = epoch_loss, training_accuracy = f'{100*correct_pred.float()/num_examples:.3f}%',
-                             validation_accuracy = f'{compute_accuracy(model, validation_loader, device):.3f}%')
+                             test_accuracy = f'{compute_accuracy(model, test_loader, device):.3f}%')
     return history
 
 # Helper function to train using knowledge distillation
-def distillation_training(teacher, student, device, training_loader, validation_loader, epochs,
+def distillation_training(teacher, student, device, training_loader, test_loader, epochs,
                  loss_fn, opt, scheduler, temperature):
 
     # History to show loss over time 
@@ -80,7 +80,7 @@ def distillation_training(teacher, student, device, training_loader, validation_
     
     # Training loop over epochs
     epoch_loop = tqdm(range(epochs), desc="Total progress", position=0)
-    epoch_loop.set_postfix(lr = opt.param_groups[0]['lr'], loss = epoch_loss, accuracy = '0%', validation_accuracy = '0%')
+    epoch_loop.set_postfix(lr = opt.param_groups[0]['lr'], loss = epoch_loss, accuracy = '0%', test_accuracy = '0%')
     for i in epoch_loop:
         
         # Training
@@ -125,5 +125,5 @@ def distillation_training(teacher, student, device, training_loader, validation_
         epoch_loss = sum(history[-epoch_size:]) / epoch_size
         epoch_loop.set_postfix(lr = opt.param_groups[0]['lr'],
                              loss = epoch_loss, training_accuracy = f'{100*correct_pred.float()/num_examples:.3f}%',
-                             validation_accuracy = f'{compute_accuracy(student, validation_loader, device):.3f}%')
+                             test_accuracy = f'{compute_accuracy(student, test_loader, device):.3f}%')
     return history

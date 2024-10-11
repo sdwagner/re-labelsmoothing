@@ -5,7 +5,7 @@ from torch.utils.data import Dataset
 
 """
 Dataset for TinyImageNet
-Used for loading training, validation and testing of the TinyImageNet dataset.
+Used for loading training and validation data of the TinyImageNet dataset.
 This requires the zip file to be unpacked in the chosen directory, which can be found here: 
 """
 class TinyImageNet (Dataset):
@@ -47,18 +47,8 @@ class TinyImageNet (Dataset):
                         self.data.append(path)
                         self.targets.append(cur_class)
             
-        # Loading the testing data (without any labels)
+        # Loading the validation data as test data (no annotations for test data)
         elif (split == "test"):
-            test = os.path.join(directory, "tiny-imagenet-200", "test", "images")
-            
-            # Foreach image in the folder
-            for i in range(0, 10000):
-                path = os.path.join(test, f"test_{i}.JPEG")
-                self.data.append(path)
-                self.targets.append(-1)
-                
-        # Loading the validation data 
-        elif (split == "val"):
             
             # Loading validation annotaions
             val_annotations = os.path.join(directory, "tiny-imagenet-200", "val", "val_annotations.txt")
