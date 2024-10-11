@@ -1,15 +1,13 @@
 FROM python:3.9.13-buster
 #FROM pytorch/pytorch:2.4.1-cuda11.8-cudnn9-runtime
 
-
-COPY requirements.txt /docker_build/
-
+COPY . /app
 
 RUN pip install --upgrade pip && \
-    pip install -r /docker_build/requirements.txt
+    pip install -r /app/requirements.txt
 
 
+WORKDIR /app
 
-WORKDIR /workspace
 # change dir to /workspace
 
