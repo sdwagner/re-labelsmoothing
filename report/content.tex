@@ -4,7 +4,7 @@ Neural networks are widely recognized as the predominant tool in machine learnin
 When designing and training a neural network, the objective is twofold: accurate results for the training data and the ability to produce accurate results for new, unseen test data. However, neural networks tend to overfit, which can be arbitrarily complicated to avoid for complex models. Furthermore, modern neural networks are prone to provide predictions with high certainty even when those predictions are incorrect (or uncertain), making them overconfident.
 To address these issues, there are various techniques available, including the relatively new technique of label smoothing. This technique is designed to have a minimal impact on training time while protecting against both overfitting and overconfidence.
 
-\subsection{What Is Label Smoothing}
+\subsection{What Is Label Smoothing?}
 Label smoothing is a regularization method aiming to reduce overfitting and overconfidence in classification tasks. It was first introduced by Szegedy et al. \cite{szegedy2016}. The idea of label smoothing is to combine the one-hot encoded original label $y$ with a discrete uniform distribution. The  new label vector called $y^{LS}$ has the components 
 $$y^{LS}_k=y_k(1-\alpha)+\alpha/K,$$ where $K$ represents the number of distinct classes and $\alpha\in\lbrack0,1)$ is called \textit{label smoothing constant} that determines the strength of the smoothing.
 \begin{figure}[ht]
