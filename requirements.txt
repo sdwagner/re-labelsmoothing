@@ -1,6 +1,7 @@
 --extra-index-url https://download.pytorch.org/whl/cu118
 
 ipykernel==6.25.1
+jupyter==1.1.1
 ipywidgets==8.1.0
 matplotlib==3.7.2
 numpy==1.25.2
